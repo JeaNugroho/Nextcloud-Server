@@ -3576,7 +3576,7 @@
                         }
                     },
                     "403": {
-                        "description": "App not allowed",
+                        "description": "App is not allowed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3718,7 +3718,7 @@
                         }
                     },
                     "403": {
-                        "description": "App not allowed",
+                        "description": "App is not allowed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3850,7 +3850,7 @@
                         }
                     },
                     "403": {
-                        "description": "App or key not allowed",
+                        "description": "App or key is not allowed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3974,7 +3974,7 @@
                         }
                     },
                     "403": {
-                        "description": "App or key not allowed",
+                        "description": "App or key is not allowed",
                         "content": {
                             "application/json": {
                                 "schema": {
