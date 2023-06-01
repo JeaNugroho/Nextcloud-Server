@@ -73,13 +73,7 @@
 			@update:checked="onBackgroundJobModeChanged">
 			{{ t('settings', 'Cron (Recommended)') }}
 		</NcCheckboxRadioSwitch>
-		<em v-if="cliBasedCronPossible">{{ cronLabel }}</em>
-		<em v-else>
-			{{ t('settings', 'To run this you need the PHP POSIX extension. See {linkstart}PHP documentation{linkend} for more details.', {
-				linkstart: '<a href="https://www.php.net/manual/en/book.posix.php">',
-				linkend: '</a>',
-			}) }}
-		</em>
+		<em v-html="cronLabel" />
 	</NcSettingsSection>
 </template>
 
@@ -125,9 +119,13 @@ export default {
 	},
 	computed: {
 		cronLabel() {
-			let desc = t('settings', 'Use system cron service to call the cron.php file every 5 minutes. Recommended for all instances.')
+			let desc = t('settings', 'Use system cron service to call the cron.php file every 5 minutes.')
 			if (this.cliBasedCronPossible) {
-				desc += ' ' + t('settings', 'The cron.php needs to be executed by the system user "{user}".', { user: this.cliBasedCronUser })
+				desc += '<br>' + t('settings', 'The cron.php needs to be executed by the system user "{user}".', { user: this.cliBasedCronUser })
+			} else {
+				desc += '<br>' + t('settings', 'The PHP POSIX extension is required. See {linkstart}PHP documentation{linkend} for more details.')
+				.replace('{linkstart}', '<a target="_blank" rel="noreferrer nofollow" class="external" href="https://www.php.net/manual/en/book.posix.php">')
+				.replace('{linkend}', '</a>')
 			}
 			return desc
 		},
