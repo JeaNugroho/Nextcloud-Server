@@ -32,14 +32,21 @@ use OCP\Files\Node;
  * @since 25.0.1
  */
 class BeforePreviewFetchedEvent extends \OCP\EventDispatcher\Event {
-	private Node $node;
-
 	/**
 	 * @since 25.0.1
 	 */
-	public function __construct(Node $node) {
+	public function __construct(
+		private Node $node,
+		/** @deprecated 28.0.0 default value is deprecated **/
+		private int $width = 0,
+		/** @deprecated 28.0.0 default value is deprecated **/
+		private int $height = 0,
+		/** @deprecated 28.0.0 default value is deprecated **/
+		private bool $crop = false,
+		/** @deprecated 28.0.0 default value is deprecated **/
+		private string $mode = '',
+	) {
 		parent::__construct();
-		$this->node = $node;
 	}
 
 	/**
@@ -47,5 +54,33 @@ class BeforePreviewFetchedEvent extends \OCP\EventDispatcher\Event {
 	 */
 	public function getNode(): Node {
 		return $this->node;
+	}
+
+	/**
+	 * @since 28.0.0
+	 */
+	public function getWidth(): int {
+		return $this->width;
+	}
+
+	/**
+	 * @since 28.0.0
+	 */
+	public function getHeight(): int {
+		return $this->height;
+	}
+
+	/**
+	 * @since 28.0.0
+	 */
+	public function isCrop(): bool {
+		return $this->crop;
+	}
+
+	/**
+	 * @since 28.0.0
+	 */
+	public function getMode(): string {
+		return $this->mode;
 	}
 }
