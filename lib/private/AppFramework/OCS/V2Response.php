@@ -4,6 +4,7 @@
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -24,13 +25,22 @@
 namespace OC\AppFramework\OCS;
 
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
 
+/**
+ * @psalm-import-type DataResponseType from DataResponse
+ * @template S of int
+ * @template-covariant T of DataResponseType
+ * @template H of array<string, mixed>
+ * @template-extends BaseResponse<S, DataResponseType, H>
+ */
 class V2Response extends BaseResponse {
 	/**
 	 * The V2 endpoint just passes on status codes.
 	 * Of course we have to map the OCS specific codes to proper HTTP status codes
 	 *
+	 * @psalm-suppress ImplementedReturnTypeMismatch Expected because we match some status codes
 	 * @return int
 	 */
 	public function getStatus() {

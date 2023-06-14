@@ -7,6 +7,7 @@ declare(strict_types=1);
  *
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -46,6 +47,9 @@ class CompressionMiddleware extends Middleware {
 		$this->useGZip = false;
 	}
 
+	/**
+	 * @param Response<int, array<string, mixed>> $response
+	 */
 	public function afterController($controller, $methodName, Response $response) {
 		// By default we do not gzip
 		$allowGzip = false;
