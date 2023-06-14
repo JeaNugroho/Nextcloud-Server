@@ -8,6 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <robin@icewind.nl>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license AGPL-3.0
  *
@@ -32,6 +33,9 @@ use OCP\AppFramework\Http;
  * Class StreamResponse
  *
  * @since 8.1.0
+ * @template S of int
+ * @template H of array<string, mixed>
+ * @template-extends Response<S, H>
  */
 class StreamResponse extends Response implements ICallbackResponse {
 	/** @var string */

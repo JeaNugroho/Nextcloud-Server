@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -35,6 +36,9 @@ use OCP\IRequest;
  * Public library to send several files in one zip archive.
  *
  * @since 15.0.0
+ * @template S of int
+ * @template H of array<string, mixed>
+ * @template-extends Response<S, H>
  */
 class ZipResponse extends Response implements ICallbackResponse {
 	/** @var array{internalName: string, resource: resource, size: int, time: int}[] Files to be added to the zip response */

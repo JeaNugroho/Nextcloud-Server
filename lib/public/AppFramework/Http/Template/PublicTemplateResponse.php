@@ -5,6 +5,7 @@
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Julius Härtl <jus@bitgrid.net>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -31,6 +32,9 @@ use OCP\AppFramework\Http\TemplateResponse;
  * Class PublicTemplateResponse
  *
  * @since 14.0.0
+ * @template H of array<string, mixed>
+ * @template S of int
+ * @template-extends TemplateResponse<S, H>
  */
 class PublicTemplateResponse extends TemplateResponse {
 	private $headerTitle = '';

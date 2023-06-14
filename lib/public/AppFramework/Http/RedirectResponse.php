@@ -7,6 +7,7 @@
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author v1r0x <vinzenz.rosenkranz@gmail.com>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license AGPL-3.0
  *
@@ -30,6 +31,8 @@ use OCP\AppFramework\Http;
 /**
  * Redirects to a different URL
  * @since 7.0.0
+ * @template H of array<string, mixed>
+ * @template-extends Response<Http::STATUS_SEE_OTHER, H>
  */
 class RedirectResponse extends Response {
 	private $redirectURL;

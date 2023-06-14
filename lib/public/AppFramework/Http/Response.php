@@ -12,6 +12,7 @@
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license AGPL-3.0
  *
@@ -41,6 +42,8 @@ use Psr\Log\LoggerInterface;
  *
  * It handles headers, HTTP status code, last modified and ETag.
  * @since 6.0.0
+ * @template S of int
+ * @template H of array<string, mixed>
  */
 class Response {
 	/**
@@ -61,9 +64,9 @@ class Response {
 
 	/**
 	 * HTTP status code - defaults to STATUS OK
-	 * @var int
+	 * @var S
 	 */
-	private $status = Http::STATUS_OK;
+	private $status;
 
 
 	/**
@@ -100,6 +103,7 @@ class Response {
 		 */
 		$request = \OC::$server->get(IRequest::class);
 		$this->addHeader("X-Request-Id", $request->getId());
+		$this->setStatus(Http::STATUS_OK);
 	}
 
 	/**
@@ -231,7 +235,9 @@ class Response {
 
 	/**
 	 * Set the headers
-	 * @param array $headers value header pairs
+	 * @template NewH as array<string, mixed>
+	 * @param NewH $headers value header pairs
+	 * @psalm-this-out self<S, NewH>
 	 * @return $this
 	 * @since 8.0.0
 	 */
@@ -244,7 +250,7 @@ class Response {
 
 	/**
 	 * Returns the set headers
-	 * @return array the headers
+	 * @return array{Last-Modified?: string, Content-Security-Policy: string, Feature-Policy: string, X-Robots-Tag: string, ETag?: string, ...H} the headers
 	 * @since 6.0.0
 	 */
 	public function getHeaders() {
@@ -279,11 +285,14 @@ class Response {
 
 	/**
 	 * Set response status
-	 * @param int $status a HTTP status code, see also the STATUS constants
+	 * @template NewS as int
+	 * @param NewS $status a HTTP status code, see also the STATUS constants
+	 * @psalm-this-out self<NewS, H>
 	 * @return Response Reference to this object
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
 	public function setStatus($status) {
+		/** @psalm-suppress InvalidPropertyAssignmentValue Expected due to @psalm-this-out */
 		$this->status = $status;
 
 		return $this;
@@ -338,6 +347,7 @@ class Response {
 	/**
 	 * Get response status
 	 * @since 6.0.0
+	 * @return S
 	 */
 	public function getStatus() {
 		return $this->status;

@@ -6,6 +6,7 @@ declare(strict_types=1);
  * @copyright Copyright (c) 2020 Joas Schilling <coding@schilljs.com>
  *
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -26,10 +27,13 @@ declare(strict_types=1);
 namespace OCP\AppFramework\Http;
 
 use OCP\Template;
+use OCP\AppFramework\Http;
 
 /**
  * A generic 429 response showing an 404 error page as well to the end-user
  * @since 19.0.0
+ * @template H of array<string, mixed>
+ * @template-extends Response<Http::STATUS_TOO_MANY_REQUESTS, H>
  */
 class TooManyRequestsResponse extends Response {
 	/**
@@ -39,7 +43,7 @@ class TooManyRequestsResponse extends Response {
 		parent::__construct();
 
 		$this->setContentSecurityPolicy(new ContentSecurityPolicy());
-		$this->setStatus(429);
+		$this->setStatus(Http::STATUS_TOO_MANY_REQUESTS);
 	}
 
 	/**

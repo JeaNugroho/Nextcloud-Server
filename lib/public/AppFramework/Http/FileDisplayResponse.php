@@ -4,6 +4,7 @@
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -29,6 +30,9 @@ use OCP\AppFramework\Http;
  * Class FileDisplayResponse
  *
  * @since 11.0.0
+ * @template S of int
+ * @template H of array<string, mixed>
+ * @template-extends Response<S, H>
  */
 class FileDisplayResponse extends Response implements ICallbackResponse {
 	/** @var \OCP\Files\File|\OCP\Files\SimpleFS\ISimpleFile */
@@ -38,8 +42,8 @@ class FileDisplayResponse extends Response implements ICallbackResponse {
 	 * FileDisplayResponse constructor.
 	 *
 	 * @param \OCP\Files\File|\OCP\Files\SimpleFS\ISimpleFile $file
-	 * @param int $statusCode
-	 * @param array $headers
+	 * @param S $statusCode
+	 * @param H $headers
 	 * @since 11.0.0
 	 */
 	public function __construct($file, $statusCode = Http::STATUS_OK,

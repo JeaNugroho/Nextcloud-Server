@@ -6,6 +6,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Kate Döen <kate.doeen@nextcloud.com>
  *
  * @license AGPL-3.0
  *
@@ -24,9 +25,13 @@
  */
 namespace OCP\AppFramework\Http;
 
+use OCP\AppFramework\Http;
+
 /**
  * A generic 404 response showing an 404 error page as well to the end-user
  * @since 8.1.0
+ * @template H of array<string, mixed>
+ * @template-extends TemplateResponse<Http::STATUS_NOT_FOUND, H>
  */
 class NotFoundResponse extends TemplateResponse {
 	/**
@@ -36,6 +41,6 @@ class NotFoundResponse extends TemplateResponse {
 		parent::__construct('core', '404', [], 'guest');
 
 		$this->setContentSecurityPolicy(new ContentSecurityPolicy());
-		$this->setStatus(404);
+		$this->setStatus(Http::STATUS_NOT_FOUND);
 	}
 }
