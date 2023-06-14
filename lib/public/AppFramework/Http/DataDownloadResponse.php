@@ -66,4 +66,30 @@ class DataDownloadResponse extends DownloadResponse {
 	public function render() {
 		return $this->data;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @template NewH as array<string, mixed>
+	 * @param NewH $headers value header pairs
+	 * @psalm-this-out self<S, C, NewH>
+	 * @return $this
+	 * @since 8.0.0
+	 */
+	public function setHeaders(array $headers) {
+		parent::setHeaders($headers);
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @template NewS as int
+	 * @param NewS $status
+	 * @psalm-this-out self<NewS, C, H>
+	 * @return $this
+	 * @since 6.0.0 - return value was added in 7.0.0
+	 */
+	public function setStatus($status) {
+		parent::setStatus($status);
+		return $this;
+	}
 }

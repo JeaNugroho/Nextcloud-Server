@@ -71,4 +71,30 @@ class FileDisplayResponse extends Response implements ICallbackResponse {
 			$output->setOutput($this->file->getContent());
 		}
 	}
+
+	/**
+	 * @inheritDoc
+	 * @template NewH as array<string, mixed>
+	 * @param NewH $headers value header pairs
+	 * @psalm-this-out self<S, NewH>
+	 * @return $this
+	 * @since 8.0.0
+	 */
+	public function setHeaders(array $headers) {
+		parent::setHeaders($headers);
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @template NewS as int
+	 * @param NewS $status
+	 * @psalm-this-out self<NewS, H>
+	 * @return $this
+	 * @since 6.0.0 - return value was added in 7.0.0
+	 */
+	public function setStatus($status) {
+		parent::setStatus($status);
+		return $this;
+	}
 }

@@ -54,4 +54,26 @@ class TooManyRequestsResponse extends Response {
 		$template = new Template('core', '429', 'blank');
 		return $template->fetchPage();
 	}
+
+	/**
+	 * @inheritDoc
+	 * @template NewH as array<string, mixed>
+	 * @param NewH $headers value header pairs
+	 * @psalm-this-out self<NewH>
+	 * @return $this
+	 * @since 8.0.0
+	 */
+	public function setHeaders(array $headers) {
+		parent::setHeaders($headers);
+		return $this;
+	}
+
+	/**
+	 * @depreacted Do not use this method. It modifies the status code which you are not supposed to do on a TooManyRequestsResponse
+	 * @since 6.0.0 - return value was added in 7.0.0
+	 */
+	public function setStatus($status) {
+		parent::setStatus($status);
+		return $this;
+	}
 }
