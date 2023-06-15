@@ -245,12 +245,7 @@ export default {
 			try {
 				this.isSavingStatus = true
 
-				if (this.messageId !== undefined && this.messageId !== null) {
-					await this.$store.dispatch('setPredefinedMessage', {
-						messageId: this.messageId,
-						clearAt: this.clearAt,
-					})
-				} else {
+				if (this.isCustomStatus) {
 					await this.$store.dispatch('setCustomMessage', {
 						message: this.editedMessage,
 						icon: this.icon,

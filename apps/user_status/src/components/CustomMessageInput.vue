@@ -39,8 +39,9 @@
 				type="text"
 				:value="message"
 				@change="onChange"
-				@keyup="onKeyup"
-				@paste="onKeyup">
+				@keyup="onChange"
+				@keyup.enter="onSubmit"
+				@paste="onChange">
 		</div>
 	</div>
 </template>
@@ -100,11 +101,11 @@ export default {
 		 *
 		 * @param {Event} event The Change Event
 		 */
-		onKeyup(event) {
+		onChange(event) {
 			this.$emit('change', event.target.value)
 		},
 
-		onChange(event) {
+		onSubmit(event) {
 			this.$emit('submit', event.target.value)
 		},
 
