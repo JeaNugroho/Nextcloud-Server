@@ -147,6 +147,7 @@
 				class="select-vue"
 				label="name"
 				:no-wrap="true"
+				:selectable="() => userGroups.length < 2"
 				@option:created="createGroup"
 				@option:selected="addUserGroup"
 				@option:deselected="removeUserGroup" />
@@ -161,6 +162,7 @@
 				label="name"
 				:multiple="true"
 				:no-wrap="true"
+				:selectable="() => userSubAdminsGroups.length < 2"
 				:options="subAdminsGroups"
 				:placeholder="t('settings', 'Set user as admin for')"
 				:value="userSubAdminsGroups"
@@ -587,7 +589,7 @@ export default {
 		 *
 		 * @param {string} gid Group id
 		 */
-		async createGroup(gid) {
+		async createGroup({ name: gid }) {
 			this.loading = { groups: true, subadmins: true }
 			try {
 				await this.$store.dispatch('addGroup', gid)
