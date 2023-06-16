@@ -148,8 +148,9 @@
 				label="name"
 				:no-wrap="true"
 				:selectable="() => userGroups.length < 2"
+				:create-option="(value) => ({ name: value, isCreating: true })"
 				@option:created="createGroup"
-				@option:selected="addUserGroup"
+				@option:selected="addUserGroup($event.at(-1))"
 				@option:deselected="removeUserGroup" />
 		</div>
 		<div v-if="subAdminsGroups.length>0 && settings.isAdmin"
@@ -168,7 +169,7 @@
 				:value="userSubAdminsGroups"
 				class="select-vue"
 				@option:deselected="removeUserSubAdmin"
-				@option:selected="addUserSubAdmin" />
+				@option:selected="addUserSubAdmin($event.at(-1))" />
 		</div>
 		<div :title="usedSpace"
 			:class="{'icon-loading-small': loading.quota}"
@@ -606,15 +607,18 @@ export default {
 		/**
 		 * Add user to group
 		 *
-		 * @param {object} groups Groups array
+		 * @param {object} group Group object
 		 */
-		async addUserGroup(groups) {
+		async addUserGroup(group) {
+			if (group.isCreating) {
+				// This is NcSelect's internal value for a new inputted group name
+				// Ignore
+				return
+			}
 			this.loading.groups = true
 			const userid = this.user.id
-			// each new group will be added to end of array
-			// quick fix for https://github.com/sagalbot/vue-select/issues/1624
-			const gid = groups[groups.length - 1].id
-			if (groups[groups.length - 1].canAdd === false) {
+			const gid = group.id
+			if (group.canAdd === false) {
 				return false
 			}
 			try {
@@ -656,14 +660,12 @@ export default {
 		/**
 		 * Add user to group
 		 *
-		 * @param {object} groups Groups array
+		 * @param {object} group Group object
 		 */
-		async addUserSubAdmin(groups) {
+		async addUserSubAdmin(group) {
 			this.loading.subadmins = true
 			const userid = this.user.id
-			// each new group will be added to end of array
-			// quick fix for https://github.com/sagalbot/vue-select/issues/1624
-			const gid = groups[groups.length - 1].id
+			const gid = group.id
 			try {
 				await this.$store.dispatch('addUserSubAdmin', {
 					userid,
