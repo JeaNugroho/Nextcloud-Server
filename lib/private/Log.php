@@ -38,17 +38,18 @@ namespace OC;
 
 use Exception;
 use Nextcloud\LogNormalizer\Normalizer;
-use OC\AppFramework\Bootstrap\Coordinator;
 use OCP\EventDispatcher\IEventDispatcher;
+use OCP\ILogger;
+use OCP\IUserSession;
 use OCP\Log\BeforeMessageLoggedEvent;
 use OCP\Log\IDataLogger;
-use Throwable;
-use function array_merge;
-use OC\Log\ExceptionSerializer;
-use OCP\ILogger;
 use OCP\Log\IFileBased;
 use OCP\Log\IWriter;
 use OCP\Support\CrashReport\IRegistry;
+use OC\AppFramework\Bootstrap\Coordinator;
+use OC\Log\ExceptionSerializer;
+use Throwable;
+use function array_merge;
 use function strtr;
 
 /**
