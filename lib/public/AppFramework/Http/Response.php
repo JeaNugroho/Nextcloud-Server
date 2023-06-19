@@ -205,6 +205,7 @@ class Response {
 	 * @param string $value The value, null will delete it
 	 * @return $this
 	 * @since 6.0.0 - return value was added in 7.0.0
+	 * @depreacted Use setHeaders instead
 	 */
 	public function addHeader($name, $value) {
 		$name = trim($name);  // always remove leading and trailing whitespace
