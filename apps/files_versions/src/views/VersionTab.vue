@@ -19,6 +19,7 @@
 	<ul data-files-versions-versions-list>
 		<Version v-for="version in orderedVersions"
 			:key="version.mtime"
+			:load-preview="isActive"
 			:version="version"
 			:file-info="fileInfo"
 			:is-current="version.mtime === fileInfo.mtime"
@@ -75,6 +76,11 @@ export default {
 			return this.versions
 				.map(version => version.mtime)
 				.reduce((a, b) => Math.min(a, b))
+		},
+
+		/** @return {boolean} */
+		isActive() {
+			return this.$parent.isActive
 		},
 	},
 	methods: {
