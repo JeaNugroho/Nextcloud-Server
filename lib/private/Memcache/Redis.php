@@ -87,11 +87,11 @@ class Redis extends Cache implements IMemcacheTTL {
 	}
 
 	public function hasKey($key) {
-		return (bool)self::$cache->exists($this->getPrefix() . $key);
+		return (bool)$this->getCache()->exists($this->getPrefix() . $key);
 	}
 
 	public function remove($key) {
-		if (self::$cache->del($this->getPrefix() . $key)) {
+		if ($this->getCache()->unlink($this->getPrefix() . $key)) {
 			return true;
 		} else {
 			return false;
@@ -101,8 +101,8 @@ class Redis extends Cache implements IMemcacheTTL {
 	public function clear($prefix = '') {
 		// TODO: this is slow and would fail with Redis cluster
 		$prefix = $this->getPrefix() . $prefix . '*';
-		$keys = self::$cache->keys($prefix);
-		$deleted = self::$cache->del($keys);
+		$keys = this->getCache()->keys($prefix);
+		$deleted = $this->getCache()->del($keys);
 
 		return (is_array($keys) && (count($keys) === $deleted));
 	}
@@ -134,7 +134,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return int | bool
 	 */
 	public function inc($key, $step = 1) {
-		return self::$cache->incrBy($this->getPrefix() . $key, $step);
+		return $this->getCache()->incrBy($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	}
 
 	public function setTTL($key, $ttl) {
-		self::$cache->expire($this->getPrefix() . $key, $ttl);
+		$this->getCache()->expire($this->getPrefix() . $key, $ttl);
 	}
 
 	public static function isAvailable(): bool {
