@@ -472,7 +472,9 @@ export default {
 				cursor: pointer;
 			}
 			&:first-of-type {
-				margin-top: 0;
+				padding: 10px;
+				border-radius: 10px;
+				border: 2px solid var(--color-border-dark);
 			}
 			&.update-channel-selector {
 				display: inline-block;
