@@ -49,20 +49,28 @@ class Redis extends Cache implements IMemcacheTTL {
 	];
 
 	/**
-	 * @var \Redis $cache
+	 * @var \Redis|\RedisCluster $cache
 	 */
 	private static $cache = null;
 
 	public function __construct($prefix = '', string $logFile = '') {
 		parent::__construct($prefix);
+	}
+
+	/**
+	 * @return \Redis|\RedisCluster|null
+	 * @throws \Exception
+	 */
+	public function getCache() {
 		if (is_null(self::$cache)) {
 			self::$cache = \OC::$server->getGetRedisFactory()->getInstance();
 		}
+		return self::$cache;
 	}
 
 	public function get($key) {
 		$result = self::$cache->get($this->getPrefix() . $key);
-		if ($result === false && !self::$cache->exists($this->getPrefix() . $key)) {
+		if ($result === false) {
 			return null;
 		}
 
@@ -72,9 +80,9 @@ class Redis extends Cache implements IMemcacheTTL {
 	public function set($key, $value, $ttl = 0) {
 		$value = self::encodeValue($value);
 		if ($ttl > 0) {
-			return self::$cache->setex($this->getPrefix() . $key, $ttl, json_encode($value));
+			return $this->getCache()->setex($this->getPrefix() . $key, $ttl, $value);
 		} else {
-			return self::$cache->set($this->getPrefix() . $key, json_encode($value));
+			return $this->getCache()->set($this->getPrefix() . $key, $value);
 		}
 	}
 
@@ -115,7 +123,7 @@ class Redis extends Cache implements IMemcacheTTL {
 			$args['ex'] = $ttl;
 		}
 
-		return self::$cache->set($this->getPrefix() . $key, $value, $args);
+		return $this->getCache()->set($this->getPrefix() . $key, $value, $args);
 	}
 
 	/**
@@ -137,10 +145,8 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return int | bool
 	 */
 	public function dec($key, $step = 1) {
-		if (!$this->hasKey($key)) {
-			return false;
-		}
-		return self::$cache->decrBy($this->getPrefix() . $key, $step);
+		$res = $this->evalLua('dec', [$key], [$step]);
+		return ($res === 'NEX') ? false : $res;
 	}
 
 	/**
@@ -152,18 +158,10 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return bool
 	 */
 	public function cas($key, $old, $new) {
-		if (!is_int($new)) {
-			$new = json_encode($new);
-		}
-		self::$cache->watch($this->getPrefix() . $key);
-		if ($this->get($key) === $old) {
-			$result = self::$cache->multi()
-				->set($this->getPrefix() . $key, $new)
-				->exec();
-			return $result !== false;
-		}
-		self::$cache->unwatch();
-		return false;
+		$old = self::encodeValue($old);
+		$new = self::encodeValue($new);
+
+		return $this->evalLua('cas', [$key], [$old, $new]) > 0;
 	}
 
 	/**
@@ -174,15 +172,9 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return bool
 	 */
 	public function cad($key, $old) {
-		self::$cache->watch($this->getPrefix() . $key);
-		if ($this->get($key) === $old) {
-			$result = self::$cache->multi()
-				->del($this->getPrefix() . $key)
-				->exec();
-			return $result !== false;
-		}
-		self::$cache->unwatch();
-		return false;
+		$old = self::encodeValue($old);
+
+		return $this->evalLua('cad', [$key], [$old]) > 0;
 	}
 
 	public function setTTL($key, $ttl) {
