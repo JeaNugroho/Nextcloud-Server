@@ -69,7 +69,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	}
 
 	public function get($key) {
-		$result = self::$cache->get($this->getPrefix() . $key);
+		$result = $this->getCache()->get($this->getPrefix() . $key);
 		if ($result === false) {
 			return null;
 		}
