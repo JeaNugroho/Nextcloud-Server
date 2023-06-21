@@ -81,6 +81,10 @@
 				:disabled="loading.displayName||loading.all"
 				trailing-button-icon="arrowRight"
 				:value.sync="editedDisplayName"
+				autocapitalize="off"
+				autocomplete="off"
+				autocorrect="off"
+				spellcheck="false"
 				type="text"
 				@trailing-button-click="updateDisplayName">
 				<template #trailing-button-icon>
@@ -108,6 +112,11 @@
 				:placeholder="t('settings', 'Add new password')"
 				trailing-button-icon="arrowRight"
 				:value.sync="editedPassword"
+				autocapitalize="off"
+				autocomplete="new-password"
+				autocorrect="off"
+				required
+				spellcheck="false"
 				type="password"
 				@trailing-button-click="updatePassword">
 				<template #trailing-button-icon>
@@ -127,7 +136,11 @@
 				:disabled="loading.mailAddress||loading.all"
 				trailing-button-icon="arrowRight"
 				:value.sync="editedMail"
-				type="text"
+				autocapitalize="off"
+				autocomplete="new-password"
+				autocorrect="off"
+				spellcheck="false"
+				type="email"
 				@trailing-button-click="updateEmail">
 				<template #trailing-button-icon>
 					<ArrowRight :size="20" />
